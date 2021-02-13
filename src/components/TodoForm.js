@@ -1,23 +1,24 @@
 import { useCallback } from 'react';
 import PropTypes from 'prop-types';
-import useInput from 'hooks/useInput';
 import styled from 'styled-components';
+import useInput from 'hooks/useInput';
+import { StyleWirteInput } from 'style/input';
 
-const TodoForm = ({ onGetToDo }) => {
+const TodoForm = ({ onCreate }) => {
   const [text, onChangeText, setText] = useInput('');
 
   const onSubmit = useCallback(
     (e) => {
       e.preventDefault();
-      onGetToDo(text);
+      onCreate(text);
       setText('');
     },
-    [text, onGetToDo, setText],
+    [text, onCreate, setText],
   );
 
   return (
     <s.form onSubmit={onSubmit}>
-      <input
+      <StyleWirteInput
         type="text"
         placeholder="write your to do list"
         value={text}
@@ -31,18 +32,18 @@ const TodoForm = ({ onGetToDo }) => {
 };
 
 TodoForm.propTypes = {
-  onGetToDo: PropTypes.func.isRequired,
+  onCreate: PropTypes.func.isRequired,
 };
 export default TodoForm;
 
 const s = {};
 s.form = styled.form`
-  & input {
-    width: 205px;
-  }
+  margin-left: 5px;
   & button {
     padding: 5px 10px;
     border: none;
     border-radius: 20px;
+    margin-left: 5px;
+    cursor: pointer;
   }
 `;

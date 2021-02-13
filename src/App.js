@@ -3,33 +3,43 @@ import styled from 'styled-components';
 import TodoForm from 'components/TodoForm';
 import TodoList from 'components/TodoList';
 
-//todos = [{id, content,}]
 const App = () => {
   const [todos, setTodos] = useState([]);
 
-  const onGetToDo = useCallback(
+  const onCreate = useCallback(
     (content) => {
       const todo = {
         content,
         complete: false,
       };
-      const _todos = [...todos].push(todo);
+      const _todos = [...todos];
+      _todos.push(todo);
       setTodos(_todos);
-      console.log(todos);
     },
     [todos],
   );
 
-  const onEdit = useCallback((i, content) => {
-    const editTodo = {
-      content,
-      complete: false,
-    };
-    console.log(editTodo);
-    console.log(todos);
-    const _todos = [...todos].splice(i, 1, editTodo);
-    console.log(_todos);
-  }, []);
+  const onEdit = useCallback(
+    (i, content) => {
+      const editTodo = {
+        content,
+        complete: false,
+      };
+      const _todos = [...todos];
+      _todos.splice(i, 1, editTodo);
+      setTodos(_todos);
+    },
+    [todos],
+  );
+
+  const onComplete = useCallback(
+    (i, isCompleted) => {
+      const _todos = [...todos];
+      _todos[i] = { ..._todos[i], complete: isCompleted };
+      setTodos(_todos);
+    },
+    [todos],
+  );
 
   const onRemove = useCallback(
     (i) => {
@@ -42,7 +52,7 @@ const App = () => {
   return (
     <s.toDoList>
       <h1>To Do List</h1>
-      <TodoForm onGetToDo={(content) => onGetToDo(content)} />
+      <TodoForm onCreate={(content) => onCreate(content)} />
       <ul>
         {todos.map((todo, i) => (
           <TodoList
@@ -51,6 +61,7 @@ const App = () => {
             id={i}
             onEdit={(i, content) => onEdit(i, content)}
             onRemove={(i) => onRemove(i)}
+            onComplete={(i, isCompleted) => onComplete(i, isCompleted)}
           />
         ))}
       </ul>
@@ -66,7 +77,7 @@ s.toDoList = styled.section`
   border: 1px solid #eee;
   border-radius: 2px;
   box-shadow: 2px 2px 2px #eee;
-  margin: 15px auto 0;
+  margin: 30px auto 0;
   padding: 30px 50px;
   & h1 {
     text-align: center;
@@ -74,16 +85,5 @@ s.toDoList = styled.section`
   }
   & ul {
     padding: 0;
-    & li:hover {
-      background-color: #eee;
-      & .btnGroup {
-        display: inline-block;
-      }
-    }
-  }
-  & input {
-    padding: 5px;
-    border: none;
-    border-bottom: 1px solid #eee;
   }
 `;
