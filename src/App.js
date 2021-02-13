@@ -2,21 +2,27 @@ import { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import TodoForm from 'components/TodoForm';
 import TodoList from 'components/TodoList';
+import { StyleButton } from 'style/button';
 
 const App = () => {
+  const [id, setId] = useState(1);
   const [todos, setTodos] = useState([]);
+  const [selectAll, setSelectAll] = useState(true);
+  const [selectComplete, setSelectComplete] = useState(false);
 
   const onCreate = useCallback(
     (content) => {
       const todo = {
+        id,
         content,
         complete: false,
       };
       const _todos = [...todos];
       _todos.push(todo);
       setTodos(_todos);
+      setId((prev) => prev + 1);
     },
-    [todos],
+    [todos, id],
   );
 
   const onEdit = useCallback(
@@ -33,7 +39,8 @@ const App = () => {
   );
 
   const onComplete = useCallback(
-    (i, isCompleted) => {
+    (id, isCompleted) => {
+      const i = todos.findIndex((todo) => todo.id === id);
       const _todos = [...todos];
       _todos[i] = { ..._todos[i], complete: isCompleted };
       setTodos(_todos);
@@ -43,28 +50,44 @@ const App = () => {
 
   const onRemove = useCallback(
     (i) => {
-      const _todos = [...todos].filter((todo, j) => j !== i);
+      const _todos = [...todos].filter((todo) => todo.id !== i);
       setTodos(_todos);
     },
     [todos],
   );
+
+  const onSelectAll = useCallback(() => setSelectAll(true), []);
+  const onSelectIsComplete = useCallback(() => {
+    setSelectAll(false);
+    setSelectComplete((prev) => !prev);
+  }, []);
+  const onAllRemove = useCallback(() => setTodos([]), []);
 
   return (
     <s.toDoList>
       <h1>To Do List</h1>
       <TodoForm onCreate={(content) => onCreate(content)} />
       <ul>
-        {todos.map((todo, i) => (
+        {(selectAll
+          ? todos
+          : todos.filter((todo) => (selectComplete ? todo.complete : !todo.complete))
+        ).map((todo, i) => (
           <TodoList
             todo={todo}
             key={i}
-            id={i}
             onEdit={(i, content) => onEdit(i, content)}
             onRemove={(i) => onRemove(i)}
             onComplete={(i, isCompleted) => onComplete(i, isCompleted)}
           />
         ))}
       </ul>
+      <div>
+        <StyleButton onClick={onSelectAll}>Show All</StyleButton>
+        <StyleButton onClick={onSelectIsComplete}>
+          {selectComplete ? 'Show Uncompleted' : 'Show Completed'}
+        </StyleButton>
+        <StyleButton onClick={onAllRemove}>Delete All</StyleButton>
+      </div>
     </s.toDoList>
   );
 };

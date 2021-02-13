@@ -4,16 +4,14 @@ import { useCallback, useState } from 'react';
 import { StyleWirteInput } from 'style/input';
 import styled from 'styled-components';
 
-const TodoList = ({ todo: { complete, content }, id, onRemove, onEdit, onComplete }) => {
+const TodoList = ({ todo: { id, complete, content }, onRemove, onEdit, onComplete }) => {
   const [isEdit, setIsEdit] = useState(false);
-  const [isChecked, setIsChecked] = useState(complete);
   const [editText, onChangeEditText] = useInput(content);
 
   const onCheck = useCallback(
     (e) => {
       const { checked } = e.target;
       onComplete(id, checked);
-      setIsChecked(checked);
     },
     [id, onComplete],
   );
@@ -42,8 +40,8 @@ const TodoList = ({ todo: { complete, content }, id, onRemove, onEdit, onComplet
 
   return (
     <s.li>
-      <form className={isChecked ? 'checked' : null}>
-        <input type="checkbox" onChange={onCheck} />
+      <form className={complete ? 'checked' : null}>
+        <input type="checkbox" onChange={onCheck} checked={complete} />
         {isEdit ? (
           <StyleWirteInput
             value={editText}
@@ -67,8 +65,8 @@ TodoList.propTypes = {
   todo: PropTypes.shape({
     content: PropTypes.string.isRequired,
     complete: PropTypes.bool.isRequired,
+    id: PropTypes.number.isRequired,
   }).isRequired,
-  id: PropTypes.number.isRequired,
   onRemove: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
 };

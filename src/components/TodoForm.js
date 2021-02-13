@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import useInput from 'hooks/useInput';
 import { StyleWirteInput } from 'style/input';
+import { StyleButton } from 'style/button';
 
 const TodoForm = ({ onCreate }) => {
   const [text, onChangeText, setText] = useInput('');
@@ -26,7 +27,7 @@ const TodoForm = ({ onCreate }) => {
         onChange={onChangeText}
         autoFocus
       />
-      <button onSubmit={onSubmit}>Add ToDo</button>
+      <StyleButton onSubmit={onSubmit}>Add ToDo</StyleButton>
     </s.form>
   );
 };
@@ -39,11 +40,4 @@ export default TodoForm;
 const s = {};
 s.form = styled.form`
   margin-left: 5px;
-  & button {
-    padding: 5px 10px;
-    border: none;
-    border-radius: 20px;
-    margin-left: 5px;
-    cursor: pointer;
-  }
 `;
