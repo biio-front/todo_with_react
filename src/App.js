@@ -26,13 +26,14 @@ const App = () => {
   );
 
   const onEdit = useCallback(
-    (i, content) => {
+    (id, content) => {
       const editTodo = {
+        id,
         content,
         complete: false,
       };
       const _todos = [...todos];
-      _todos.splice(i, 1, editTodo);
+      _todos.splice(id - 1, 1, editTodo);
       setTodos(_todos);
     },
     [todos],
