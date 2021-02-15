@@ -43,12 +43,7 @@ const TodoList = ({ todo: { id, complete, content }, onRemove, onEdit, onComplet
       <form className={complete ? 'checked' : null}>
         <input type="checkbox" onChange={onCheck} checked={complete} />
         {isEdit ? (
-          <StyleWirteInput
-            value={editText}
-            onChange={onChangeEditText}
-            autoFocus
-            className="editInput"
-          />
+          <StyleWirteInput value={editText} onChange={onChangeEditText} autoFocus />
         ) : (
           content
         )}

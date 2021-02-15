@@ -33,7 +33,8 @@ const App = () => {
         complete: false,
       };
       const _todos = [...todos];
-      _todos.splice(id - 1, 1, editTodo);
+      const i = todos.findIndex((todo) => todo.id === id);
+      _todos.splice(i, 1, editTodo);
       setTodos(_todos);
     },
     [todos],
