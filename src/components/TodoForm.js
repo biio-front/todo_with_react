@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { memo, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import useInput from 'hooks/useInput';
@@ -35,7 +35,7 @@ const TodoForm = ({ onCreate }) => {
 TodoForm.propTypes = {
   onCreate: PropTypes.func.isRequired,
 };
-export default TodoForm;
+export default memo(TodoForm);
 
 const s = {};
 s.form = styled.form`

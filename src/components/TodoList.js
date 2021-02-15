@@ -1,6 +1,6 @@
 import useInput from 'hooks/useInput';
 import PropTypes from 'prop-types';
-import { useCallback, useState } from 'react';
+import { memo, useCallback, useState } from 'react';
 import { StyleWirteInput } from 'style/input';
 import styled from 'styled-components';
 
@@ -66,7 +66,7 @@ TodoList.propTypes = {
   onEdit: PropTypes.func.isRequired,
   onComplete: PropTypes.func.isRequired,
 };
-export default TodoList;
+export default memo(TodoList);
 
 const s = {};
 s.li = styled.li`
