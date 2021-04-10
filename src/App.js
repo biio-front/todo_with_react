@@ -4,6 +4,16 @@ import TodoForm from 'components/TodoForm';
 import TodoList from 'components/TodoList';
 import { StyleButton } from 'style/button';
 
+const sameLogic = (todos, id, content) => {
+  const todo = {
+    id,
+    content,
+    complete: false,
+  };
+  const _todos = [...todos];
+  return [_todos, todo];
+};
+
 const App = () => {
   const [id, setId] = useState(1);
   const [todos, setTodos] = useState([]);
@@ -12,12 +22,7 @@ const App = () => {
 
   const onCreate = useCallback(
     (content) => {
-      const todo = {
-        id,
-        content,
-        complete: false,
-      };
-      const _todos = [...todos];
+      const [_todos, todo] = sameLogic(todos, id, content);
       _todos.push(todo);
       setTodos(_todos);
       setId((prev) => prev + 1);
@@ -27,14 +32,9 @@ const App = () => {
 
   const onEdit = useCallback(
     (id, content) => {
-      const editTodo = {
-        id,
-        content,
-        complete: false,
-      };
-      const _todos = [...todos];
+      const [_todos, todo] = sameLogic(todos, id, content);
       const i = todos.findIndex((todo) => todo.id === id);
-      _todos.splice(i, 1, editTodo);
+      _todos.splice(i, 1, todo);
       setTodos(_todos);
     },
     [todos],
